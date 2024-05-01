@@ -10,15 +10,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Source;
 import javax.xml.transform.dom.DOMSource;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Repository
 public class JsonOrXmlAction {
@@ -128,19 +123,35 @@ public class JsonOrXmlAction {
         return null;
 	}
 	
-	public Map<String,Object> stringToMap(String data){
-		try {
+	public String createJSONString(List<Map<String,Object>> resultList) {
+		String jsonData = "{\n";
+		jsonData += "	\"root\" : {\n";
+		jsonData += "		\"adataset\" : {\n";
+		jsonData += "			\"ColumnInfo\" : {\n";
+		for(String key: resultList.get(0).keySet()) {
 			
-			ObjectMapper mapper = new ObjectMapper();
-			Map<String, Object> returnMap = mapper.readValue(data, Map.class);
-	        return returnMap;
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			if(resultList.get(0).get(key).getClass().getName().contains("String")) {
+				jsonData += ("				\""+key+"\" : string,\n");
+			}else if(resultList.get(0).get(key).getClass().getName().contains("Long")
+					|| resultList.get(0).get(key).getClass().getName().contains("int")
+					|| resultList.get(0).get(key).getClass().getName().contains("Integer")){
+				jsonData += ("				\""+key+"\" : int,\n");
+			}else {
+				jsonData += ("				\""+key+"\" : datetime,\n");
+			}
+			
 		}
-        return null;
+		jsonData += "			},\n";
+		jsonData += "			\"rows\" : {,\n";
+	    for(int i=0;i<resultList.size();i++) {
+	    	jsonData += "			{\n";
+	    	for(String key:resultList.get(i).keySet()) {
+	    		jsonData += ("        			\""+key+"\" : "+resultList.get(i).get(key)+",\n");
+	    	}
+	    	jsonData += "			},\n";
+	    }
+	    jsonData += "		}\n";
+	    jsonData += "	}\n}";
+	    return jsonData;
 	}
 }
