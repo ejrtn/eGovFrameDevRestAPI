@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="egovframework.ecall.main.mapper.Mapper">
+
+	<!-- notice 게시판 -->
+	<select id="noticeList" resultType="map" parameterType="hashMap">
+		SELECT 
+			title
+			, writer
+			, udate
+			, click_cnt
+			, id
+			, #{pageUnit} as pageUnit
+			, #{pageTotal} as pageTotal
+		from test.notice
+		<if test="title != null">where title like '%#{title}%' </if>
+		<if test="writer != null">where writer like '%#{writer}%' </if>
+		order by udate desc
+		limit #{firstIndex}, #{pageSize};
+	</select>
+	<select id="noticeGet" resultType="map" parameterType="hashMap">
+		SELECT id,title,writer,content from test.notice where id=#{id};
+	</select>
+	<insert id="noticeSave" parameterType="hashMap" >
+		INSERT INTO test.notice (title, writer, content) VALUES(#{title}, #{writer}, #{content});
+	</insert>
+	<update id="noticeUpdate" parameterType="hashMap" >
+		UPDATE test.notice
+		SET title=#{title}, writer=#{writer}, content=#{content}
+		WHERE id=#{id};
+	</update>
+	<delete id="noticeDelete" parameterType="hashMap" >
+		DELETE FROM test.notice WHERE id=#{id};
+	</delete>
+	
+	
+	<!-- common 공통 테이블 -->
+	<select id="commonGet" resultType="map" parameterType="String">
+		SELECT `key`,value from test.common where `key`=#{key};
+	</select>
+	<insert id="commonSave" parameterType="hashMap" >
+		INSERT INTO test.common (key, value) VALUES(#{key}, #{value});
+	</insert>
+	<update id="commonUpdate" parameterType="hashMap" >
+		UPDATE test.common
+		SET key=#{key}, value=#{value}
+		WHERE key=#{key};
+	</update>
+	<delete id="commonDelete" parameterType="String" >
+		DELETE FROM test.common WHERE key=#{key};
+	</delete>
+</mapper>
