@@ -12,8 +12,6 @@
 			, udate
 			, click_cnt
 			, id
-			, #{pageUnit} as pageUnit
-			, #{pageTotal} as pageTotal
 		from test.notice
 		<if test="title != null">where title like '%#{title}%' </if>
 		<if test="writer != null">where writer like '%#{writer}%' </if>

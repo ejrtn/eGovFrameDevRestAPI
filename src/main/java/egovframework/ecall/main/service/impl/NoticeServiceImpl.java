@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -46,9 +48,9 @@ public class NoticeServiceImpl implements NoticeService{
 			HttpHeaders httpHeaders= new HttpHeaders();
 			
 			if(url.equals("noticeList")) {
-				Map<String, Object> mapData = commonService.paging(parameter);
-				resultList = noticeDao.noticeList(mapData);
-			}else if(url.equals("noticeList")) {
+				parameter = commonService.paging(parameter);
+				resultList = noticeDao.noticeList(parameter);
+			}else if(url.equals("noticeGet")) {
 				resultList = noticeDao.noticeGet(parameter);
 			}else if(url.equals("noticeSave") || url.equals("noticeUpdate") || url.equals("noticeDelete")) {
 				if(url.equals("noticeSave")) {
@@ -65,10 +67,11 @@ public class NoticeServiceImpl implements NoticeService{
 			
 			if(parameter.get("resultType").equals("xml")) {
 				httpHeaders.setContentType(MediaType.APPLICATION_XML);
-				return new ResponseEntity<>(jsonOrXmlAction.createXml(resultList,url),httpHeaders, HttpStatus.OK);
+				return new ResponseEntity<>(jsonOrXmlAction.createXml(resultList,parameter,url),httpHeaders, HttpStatus.OK);
 			}else {
+				result.put("result", resultList);
 			    httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-				return new ResponseEntity<>(jsonOrXmlAction.createJSONString(resultList),httpHeaders, HttpStatus.OK);
+				return new ResponseEntity<>(jsonOrXmlAction.createJSONString(resultList,parameter),httpHeaders, HttpStatus.OK);
 			}
 			
 		}catch(Exception e){
@@ -79,11 +82,13 @@ public class NoticeServiceImpl implements NoticeService{
 		}
 		
 		if(parameter.get("resultType").equals("xml")) {
-			return ResponseEntity.ok().body(jsonOrXmlAction.createXml(resultList,url));
+			return ResponseEntity.ok().body(jsonOrXmlAction.createXml(resultList,parameter,url));
 		}else {
+			Map<String,Object> a = new HashMap<>();
+			a.put("result", "");
 			HttpHeaders httpHeaders= new HttpHeaders();
 		    httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-			return new ResponseEntity<Map<String,Object>>(result,httpHeaders, HttpStatus.OK);
+			return new ResponseEntity<Map<String,Object>>(a,httpHeaders, HttpStatus.OK);
 		}
 	}
 }
