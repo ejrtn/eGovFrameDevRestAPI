@@ -74,17 +74,19 @@ public class CommonServiceImpl implements CommonService{
 		// TODO Auto-generated method stub
 		
 		try {
-			parameter.put("firstIndex", (Integer.parseInt((String) parameter.get("pageNumber"))-1)*propertiesService.getInt("pageSize"));
+			int firstIndex = (Integer.parseInt(parameter.get("pageNumber").toString())-1)*propertiesService.getInt("pageSize");
+			parameter.put("firstIndex", firstIndex);
 			parameter.put("pageSize", propertiesService.getInt("pageSize"));
 			
-			int total = Integer.parseInt(commonDao.commonGet("noticeTotal").get("value"))/propertiesService.getInt("pageSize");
-			
-			if(Integer.parseInt(commonDao.commonGet("noticeTotal").get("value"))/propertiesService.getInt("pageSize") > propertiesService.getInt("pageUnit")) {
-				parameter.put("pageUnit", propertiesService.getInt("pageUnit"));
+			int pageTotal;
+			if(Integer.parseInt(commonDao.commonGet("noticeTotal").get("value")) % propertiesService.getInt("pageSize") > 0) {
+				pageTotal = Integer.parseInt(commonDao.commonGet("noticeTotal").get("value"))/propertiesService.getInt("pageSize")+1;
+				
 			}else {
-				parameter.put("pageUnit", total);
+				pageTotal = Integer.parseInt(commonDao.commonGet("noticeTotal").get("value"))/propertiesService.getInt("pageSize");
 			}
-			parameter.put("pageTotal",total);
+			parameter.put("pageTotal",pageTotal);
+			parameter.put("pageUnit",propertiesService.getInt("pageUnit"));
 			
 			return parameter;
 		}catch(Exception e){
