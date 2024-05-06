@@ -13,8 +13,8 @@
 			, click_cnt
 			, id
 		from test.notice
-		<if test="title != null">where title like '%#{title}%' </if>
-		<if test="writer != null">where writer like '%#{writer}%' </if>
+		<if test="title != null">WHERE title like CONCAT('%',#{title},'%')</if>
+		<if test="writer != null">WHERE writer like CONCAT('%',#{writer},'%')</if>
 		order by udate desc
 		limit #{firstIndex}, #{pageSize};
 	</select>
@@ -43,10 +43,26 @@
 	</insert>
 	<update id="commonUpdate" parameterType="hashMap" >
 		UPDATE test.common
-		SET key=#{key}, value=#{value}
-		WHERE key=#{key};
+		SET `key`=#{key}, `value`=#{value}
+		WHERE `key`=#{key};
 	</update>
 	<delete id="commonDelete" parameterType="String" >
 		DELETE FROM test.common WHERE key=#{key};
+	</delete>
+	
+	<!-- user 사용자 테이블 -->
+	<select id="login" resultType="map" parameterType="hashMap">
+		SELECT id,pw from test.user where id=#{id} and pw=#{pw};
+	</select>
+	<insert id="userSave" parameterType="hashMap" >
+		INSERT INTO test.user (id, pw) VALUES(#{id}, #{pw});
+	</insert>
+	<update id="userUpdate" parameterType="hashMap" >
+		UPDATE test.user
+		SET id=#{id}, pw=#{pw}
+		WHERE id=#{id};
+	</update>
+	<delete id="userDelete" parameterType="hashMap" >
+		DELETE FROM test.user WHERE id=#{id};
 	</delete>
 </mapper>

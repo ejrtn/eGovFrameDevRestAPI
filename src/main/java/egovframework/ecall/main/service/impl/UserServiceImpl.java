@@ -1,71 +1,68 @@
 package egovframework.ecall.main.service.impl;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StreamUtils;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import egovframework.ecall.main.common.JsonOrXmlAction;
-import egovframework.ecall.main.dao.NoticeDao;
-import egovframework.ecall.main.service.CommonService;
-import egovframework.ecall.main.service.NoticeService;
+import egovframework.ecall.main.dao.UserDao;
+import egovframework.ecall.main.service.UserService;
 
 @Service
-public class NoticeServiceImpl implements NoticeService{
-	
+public class UserServiceImpl implements UserService{
+
 	@Autowired
-	private NoticeDao noticeDao;
-	
-	@Autowired
-	private CommonService commonService;
+	private UserDao userDao;
 	
 	@Autowired
 	private JsonOrXmlAction jsonOrXmlAction;
 
 	@Override
-	public ResponseEntity<?> notice(HttpServletRequest request, String url) {
+	public ResponseEntity<?> user(HttpServletRequest request, String url) {
 		Map<String,Object> result = new HashMap<String, Object>();
 		List<Map<String,Object>> resultList = new ArrayList<>();
-		Map<String, Object> parameter = new HashMap<String, Object>();
+		Map<String,Object> parameter = new HashMap<String, Object>();
+		
+		// TODO Auto-generated method stub
 		try {
-			Enumeration<?> params = request.getParameterNames();
-			while(params.hasMoreElements()) {
-				String name = (String) params.nextElement();
-				parameter.put(name, request.getParameter(name));
-			}
+			ObjectMapper mapper = new ObjectMapper();
+			parameter = mapper.readValue(StreamUtils.copyToByteArray(request.getInputStream()), Map.class);
 			
 			HttpHeaders httpHeaders= new HttpHeaders();
 			
-			if(url.equals("noticeList")) {
-				parameter = commonService.paging(parameter);
-				resultList = noticeDao.noticeList(parameter);
-			}else if(url.equals("noticeGet")) {
-				resultList = noticeDao.noticeGet(parameter);
-			}else if(url.equals("noticeSave") || url.equals("noticeUpdate") || url.equals("noticeDelete")) {
-				if(url.equals("noticeSave")) {
-					noticeDao.noticeSave(parameter);
-					Map<String,String> a = new HashMap<String,String>();
-					a.put("key", "noticeTotal");
-					a.put("value", String.valueOf(Integer.valueOf(commonService.commonGet("noticeTotal").get("value"))+1));
-					commonService.commonUpdate(a);
-				}else if(url.equals("noticeUpdate")) {
-					noticeDao.noticeUpdate(parameter);
-				}else if(url.equals("noticeDelete")) {
-					noticeDao.noticeDelete(parameter);
+			if(url.equals("login")) {
+				if(userDao.login(parameter) != null) {
+					result.put("result", "success");
+				}else {
+					result.put("result", "nodata");
+				}
+			}else if(url.equals("userSave") || url.equals("userDaoUpdate") || url.equals("userDaoDelete")) {
+				if(url.equals("userSave")) {
+					userDao.userSave(parameter);
+				}else if(url.equals("userUpdate")) {
+					userDao.userUpdate(parameter);
+				}else if(url.equals("userDelete")) {
+					userDao.userDelete(parameter);
 				}
 				result.put("result", "success");
-				resultList.add(result);
 			}
+			resultList.add(result);
 			
 			if(parameter.get("resultType").equals("xml")) {
 				httpHeaders.setContentType(MediaType.APPLICATION_XML);
@@ -74,8 +71,8 @@ public class NoticeServiceImpl implements NoticeService{
 			    httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 				return new ResponseEntity<>(jsonOrXmlAction.createJSONString(resultList,parameter),httpHeaders, HttpStatus.OK);
 			}
-			
-		}catch(Exception e){
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 			Map<String,Object> map = new HashMap<>();
 			map.put("result","error");
@@ -93,4 +90,5 @@ public class NoticeServiceImpl implements NoticeService{
 			return new ResponseEntity<>(jsonOrXmlAction.createJSONString(resultList,parameter),httpHeaders, HttpStatus.OK);
 		}
 	}
+
 }

@@ -17,4 +17,9 @@ public interface Mapper {
 	Map<String,String> commonGet(String key) throws Exception;
 	void commonUpdate(Map<String, String> map) throws Exception;
 	void commonDelete(String key) throws Exception;
+	
+	void userSave(Map<String, Object> map) throws Exception;
+	Map<String, Object> login(Map<String, Object> map) throws Exception;
+	void userDelete(Map<String, Object> map) throws Exception;
+	void userUpdate(Map<String, Object> map) throws Exception;
 }
