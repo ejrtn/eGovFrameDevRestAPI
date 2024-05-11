@@ -1,5 +1,6 @@
 package egovframework.ecall.main.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,10 +17,10 @@ public class FileController {
 	@Autowired
 	private FileService fileService;
 	
-	
 	@PostMapping(value="/fileUpload.do")
-	public String fileUpload(@RequestPart(value = "file", required = false) MultipartFile file) {
+	public String fileUpload(@RequestPart(value="file",required = false) MultipartFile file) {
 		System.out.println(file);
+		if(file == null) return null;
 		return fileService.fileUpload(file);
 	}
 }

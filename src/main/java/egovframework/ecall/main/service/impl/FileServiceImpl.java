@@ -29,20 +29,20 @@ public class FileServiceImpl implements FileService{
 		// TODO Auto-generated method stub
 		
 		try {
-			System.out.println(multipartFile.getContentType());
 			String properties = multipartFile.getContentType().contains("image") ? "imageFileUploadPath" : "videoFileUploadPath";
 			
 	        File file = null;
-	        System.out.println(multipartFile.isEmpty());
 	        if(!multipartFile.isEmpty()){
 	        	int c = 0;
+	        	String file_name = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+	        	String ext = file_name.substring(file_name.lastIndexOf(".")); //확장자
 	        	while(true) {
-	        		String file_name = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-	        		System.out.println(new File(propertiesService.getString(properties) + "/" + file_name).isFile());
+	        		
 		        	if(new File(propertiesService.getString(properties) + "/" + file_name).isFile()) {
 		        		// 저장된 파일로 변경하여 이를 보여주기 위함
 		                c += 1;
-		                file_name = file_name + "(" + String.valueOf(c) + ")";
+		                // file_name.substring(0, file_name.lastIndexOf(".") - 1) 확장자 제거 이름
+		                file_name = file_name.substring(0, file_name.lastIndexOf(".") - 1) + "(" + String.valueOf(c) + ")" + ext;
 		        	}else {
 		        		
 		        		file = new File(propertiesService.getString(properties) + "/" + file_name);
