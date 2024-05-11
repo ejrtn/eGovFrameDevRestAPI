@@ -18,27 +18,27 @@ public class NoticeController {
 	@Autowired
 	private NoticeService noticeService;
 
-	@GetMapping(value="noticeList.do")
+	@GetMapping(value="/noticeList.do")
 	public ResponseEntity<?> noticeList(HttpServletRequest request) {
 		return noticeService.notice(request,"noticeList");
 	}
 	
-	@RequestMapping(value="noticeSave.do")
+	@RequestMapping(value="/noticeSave.do")
 	public ResponseEntity<?> noticeSave(HttpServletRequest request) {
 		return noticeService.notice(request,"noticeSave");
 	}
 	
-	@GetMapping(value="noticeGet.do")
+	@GetMapping(value="/noticeGet.do")
 	public ResponseEntity<?> noticeGet(HttpServletRequest request) {
 		return noticeService.notice(request,"noticeGet");
 	}
 	
-	@RequestMapping(value="noticeUpdate.do")
+	@RequestMapping(value="/noticeUpdate.do")
 	public ResponseEntity<?> noticeUpdate(HttpServletRequest request) {
 		return noticeService.notice(request,"noticeUpdate");
 	}
 	
-	@RequestMapping(value="noticeDelete.do")
+	@RequestMapping(value="/noticeDelete.do")
 	public ResponseEntity<?> noticeDelete(HttpServletRequest request) {
 		return noticeService.notice(request,"noticeDelete");
 	}

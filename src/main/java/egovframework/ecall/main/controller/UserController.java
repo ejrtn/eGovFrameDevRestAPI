@@ -17,22 +17,22 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@RequestMapping(value="userSave.do")
+	@RequestMapping(value="/userSave.do")
 	public ResponseEntity<?> userSave(HttpServletRequest request) {
 		return userService.user(request,"userSave");
 	}
 	
-	@PostMapping(value="login.do")
+	@PostMapping(value="/login.do")
 	public ResponseEntity<?> login(HttpServletRequest request) {
 		return userService.user(request,"login");
 	}
 	
-	@RequestMapping(value="loginUpdate.do")
+	@RequestMapping(value="/loginUpdate.do")
 	public ResponseEntity<?> userUpdate(HttpServletRequest request) {
 		return userService.user(request,"userUpdate");
 	}
 	
-	@RequestMapping(value="loginDelete.do")
+	@RequestMapping(value="/loginDelete.do")
 	public ResponseEntity<?> userDelete(HttpServletRequest request) {
 		return userService.user(request,"userDelete");
 	}
