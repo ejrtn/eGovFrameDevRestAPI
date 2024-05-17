@@ -4,16 +4,16 @@ import java.time.LocalDateTime;
 
 
 public class NoticeVo {
-	private String id;
+	private int id;
 	private String title;
 	private String writer;
 	private LocalDateTime udate;
 	private int click_cnt;
 	private String content;
-	public String getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getTitle() {

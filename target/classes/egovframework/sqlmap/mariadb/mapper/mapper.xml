@@ -18,10 +18,13 @@
 		order by udate desc
 		limit #{firstIndex}, #{pageSize};
 	</select>
+	<select id="noticeLastId" resultType="int">
+		SELECT max(id) from test.notice;
+	</select>
 	<select id="noticeGet" resultType="map" parameterType="hashMap">
 		SELECT id,title,writer,content from test.notice where id=#{id};
 	</select>
-	<insert id="noticeSave" parameterType="hashMap" >
+	<insert id="noticeSave" parameterType="hashMap">
 		INSERT INTO test.notice (title, writer, content) VALUES(#{title}, #{writer}, #{content});
 	</insert>
 	<update id="noticeUpdate" parameterType="hashMap" >
@@ -32,7 +35,6 @@
 	<delete id="noticeDelete" parameterType="hashMap" >
 		DELETE FROM test.notice WHERE id=#{id};
 	</delete>
-	
 	
 	<!-- common 공통 테이블 -->
 	<select id="commonGet" resultType="map" parameterType="String">
@@ -65,4 +67,7 @@
 	<delete id="userDelete" parameterType="hashMap" >
 		DELETE FROM test.user WHERE id=#{id};
 	</delete>
+	
+	
+	
 </mapper>

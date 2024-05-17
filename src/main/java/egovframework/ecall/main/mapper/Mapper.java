@@ -7,6 +7,7 @@ public interface Mapper {
 	
 	// notice
 	List<Map<String,Object>> noticeList(Map<String, Object> map) throws Exception;
+	int noticeLastId() throws Exception;
 	void noticeSave(Map<String, Object> map) throws Exception;
 	List<Map<String,Object>> noticeGet(Map<String, Object> map) throws Exception;
 	void noticeUpdate(Map<String, Object> map) throws Exception;

@@ -1,13 +1,11 @@
 package egovframework.ecall.main.dao.impl;
 
-import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import egovframework.ecall.main.dao.CommonDao;
 import egovframework.ecall.main.dao.UserDao;
 import egovframework.ecall.main.mapper.Mapper;
 

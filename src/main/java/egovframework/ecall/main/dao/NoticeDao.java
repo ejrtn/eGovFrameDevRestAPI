@@ -6,6 +6,8 @@ import java.util.Map;
 public interface NoticeDao {
 
 	public List<Map<String,Object>> noticeList(Map<String, Object> map) throws Exception;
+	
+	public int noticeLastId() throws Exception;
 
 	public void noticeSave(Map<String, Object> map) throws Exception;
 	

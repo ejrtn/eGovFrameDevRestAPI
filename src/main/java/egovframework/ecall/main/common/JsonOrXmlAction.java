@@ -153,51 +153,54 @@ public class JsonOrXmlAction {
 		jsonData += "		},\n";
 		jsonData += "		\"dataset\":{\n";
 		jsonData += "			\"ColumnInfo\":{\n";
-		
-		for(String key: resultList.get(0).keySet()) {
-			
-			if(resultList.get(0).get(key).getClass().getName().contains("String")) {
-				jsonData += ("				\""+key+"\":\"string\"");
-			}else if(resultList.get(0).get(key).getClass().getName().contains("Long")
-					|| resultList.get(0).get(key).getClass().getName().contains("int")
-					|| resultList.get(0).get(key).getClass().getName().contains("Integer")){
-				jsonData += ("				\""+key+"\":\"int\"");
-			}else {
-				jsonData += ("				\""+key+"\":\"datetime\"");
-			}
-			if(!resultList.get(0).keySet().toArray()[resultList.get(0).keySet().toArray().length-1].equals(key)) {
-				jsonData += ",\n";
-			}else {
-				jsonData += "\n";
-			}
-		}
-		jsonData += "			},\n";
-		jsonData += "			\"rows\":[\n";
-	    for(int i=0;i<resultList.size();i++) {
-	    	jsonData += "				{\n";
-	    	for(String key:resultList.get(i).keySet()) {
-	    		if(resultList.get(0).get(key).getClass().getName().contains("String")) {
-	    			jsonData += ("				\""+key+"\":\""+resultList.get(i).get(key)+"\"");
+		if(resultList.size() > 0) {
+			for(String key: resultList.get(0).keySet()) {
+				
+				if(resultList.get(0).get(key).getClass().getName().contains("String")) {
+					jsonData += ("				\""+key+"\":\"string\"");
 				}else if(resultList.get(0).get(key).getClass().getName().contains("Long")
 						|| resultList.get(0).get(key).getClass().getName().contains("int")
 						|| resultList.get(0).get(key).getClass().getName().contains("Integer")){
-					jsonData += ("				\""+key+"\":"+resultList.get(i).get(key));
+					jsonData += ("				\""+key+"\":\"int\"");
 				}else {
-					jsonData += ("				\""+key+"\":\""+resultList.get(i).get(key).toString().replace("T"," ")+"\"");
+					jsonData += ("				\""+key+"\":\"datetime\"");
 				}
-	    		
-	    		if(!resultList.get(0).keySet().toArray()[resultList.get(0).keySet().toArray().length-1].equals(key)) {
+				if(!resultList.get(0).keySet().toArray()[resultList.get(0).keySet().toArray().length-1].equals(key)) {
 					jsonData += ",\n";
 				}else {
 					jsonData += "\n";
 				}
-	    	}
-	    	if(i != resultList.size()-1) {
-	    		jsonData += "				},\n";
-	    	}else {
-	    		jsonData += "				}\n";
-	    	}
-	    }
+			}
+		}
+		jsonData += "			},\n";
+		jsonData += "			\"rows\":[\n";
+		if(resultList.size() > 0) {
+		    for(int i=0;i<resultList.size();i++) {
+		    	jsonData += "				{\n";
+		    	for(String key:resultList.get(i).keySet()) {
+		    		if(resultList.get(0).get(key).getClass().getName().contains("String")) {
+		    			jsonData += ("				\""+key+"\":\""+resultList.get(i).get(key)+"\"");
+					}else if(resultList.get(0).get(key).getClass().getName().contains("Long")
+							|| resultList.get(0).get(key).getClass().getName().contains("int")
+							|| resultList.get(0).get(key).getClass().getName().contains("Integer")){
+						jsonData += ("				\""+key+"\":"+resultList.get(i).get(key));
+					}else {
+						jsonData += ("				\""+key+"\":\""+resultList.get(i).get(key).toString().replace("T"," ")+"\"");
+					}
+		    		
+		    		if(!resultList.get(0).keySet().toArray()[resultList.get(0).keySet().toArray().length-1].equals(key)) {
+						jsonData += ",\n";
+					}else {
+						jsonData += "\n";
+					}
+		    	}
+		    	if(i != resultList.size()-1) {
+		    		jsonData += "				},\n";
+		    	}else {
+		    		jsonData += "				}\n";
+		    	}
+		    }
+		}
 	    jsonData += "			]\n";
 	    jsonData += "		}\n	}\n}";
 	    return jsonData;

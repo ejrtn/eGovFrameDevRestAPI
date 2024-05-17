@@ -36,6 +36,12 @@ public class NoticeDaoImpl implements NoticeDao {
 		Mapper mapper = sqlSession.getMapper(Mapper.class);
 		return mapper.noticeGet(map);
 	}
+	@Override
+	public void noticeDelete(Map<String, Object> map) throws Exception {
+		// TODO Auto-generated method stub
+		Mapper mapper = sqlSession.getMapper(Mapper.class);
+		mapper.noticeDelete(map);
+	}
 
 	@Override
 	public void noticeUpdate(Map<String, Object> map) throws Exception {
@@ -45,10 +51,10 @@ public class NoticeDaoImpl implements NoticeDao {
 	}
 
 	@Override
-	public void noticeDelete(Map<String, Object> map) throws Exception {
+	public int noticeLastId() throws Exception {
 		// TODO Auto-generated method stub
 		Mapper mapper = sqlSession.getMapper(Mapper.class);
-		mapper.noticeDelete(map);
+		return mapper.noticeLastId();
 	}
 	
 }

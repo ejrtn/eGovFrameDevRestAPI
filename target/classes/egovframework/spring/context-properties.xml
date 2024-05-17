@@ -7,8 +7,8 @@
 	        <map>
 	        	<entry key="pageUnit" value="10"/>
 	        	<entry key="pageSize" value="20"/>
-	        	<entry key="imageFileUploadPath" value="D:/imsges/"/>
-	        	<entry key="videoFileUploadPath" value="D:/videos/"/>
+	        	<entry key="imageFilePath" value="D:/media/images"/>
+	        	<entry key="videoFilePath" value="D:/media/videos"/>
 	        </map>
 		</property>
 	</bean>
