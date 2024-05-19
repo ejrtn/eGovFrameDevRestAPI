@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -138,5 +140,38 @@ public class FileServiceImpl implements FileService{
 			else c++;
 		}
 		return "";
+	}
+	
+	@Override
+	public String fileList(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		try{
+			ServletInputStream inputStream = request.getInputStream();
+			String messageBody = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
+			ObjectMapper mapper = new ObjectMapper();
+			
+			File folder;
+			
+			String path = mapper.readValue(messageBody, Map.class).get("path").toString();
+			if(path.equals("image")) {
+				folder = new File(propertiesService.getString("imageFilePath") + "/" + mapper.readValue(messageBody, Map.class).get("type") + "/");
+			}else {
+				folder = new File(propertiesService.getString("videoFilePath") + "/" + mapper.readValue(messageBody, Map.class).get("type") + "/");
+			}
+			String fileList = "";
+			int c = 0;
+			for(String name: folder.list()) {
+				fileList += name;
+				if(c != folder.list().length-1) {
+					fileList += "\n";
+				}
+				c += 1;
+			}
+			return fileList;
+        } catch (IOException e) {
+        	System.out.println(e);
+        	e.printStackTrace();
+        }
+        return null;
 	}
 }

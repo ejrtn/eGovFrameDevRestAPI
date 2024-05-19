@@ -78,6 +78,8 @@ public class CommonServiceImpl implements CommonService{
 			parameter.put("firstIndex", firstIndex);
 			parameter.put("pageSize", propertiesService.getInt("pageSize"));
 			
+			
+			
 			int pageTotal;
 			if(Integer.parseInt(commonDao.commonGet("noticeTotal").get("value")) % propertiesService.getInt("pageSize") > 0) {
 				pageTotal = Integer.parseInt(commonDao.commonGet("noticeTotal").get("value"))/propertiesService.getInt("pageSize")+1;
@@ -87,7 +89,6 @@ public class CommonServiceImpl implements CommonService{
 			}
 			parameter.put("pageTotal",pageTotal);
 			parameter.put("pageUnit",propertiesService.getInt("pageUnit"));
-			
 			return parameter;
 		}catch(Exception e){
 			

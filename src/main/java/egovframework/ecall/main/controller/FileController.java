@@ -1,5 +1,7 @@
 package egovframework.ecall.main.controller;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -51,5 +53,10 @@ public class FileController {
 	@PostMapping(value="/fileDelete.do")
 	public String fileDelete(HttpServletRequest request) {
 		return fileService.fileDelete(request);
+	}
+	
+	@PostMapping(value="/fileList.do")
+	public String fileList(HttpServletRequest request) {
+		return fileService.fileList(request);
 	}
 }
